@@ -11,7 +11,7 @@ services:
       - ./scripts:/docker-entrypoint-initdb.d:ro
     networks:
       users-network:
-  users-sevice:
+  users-service:
     image: users
     restart: always
     deploy:

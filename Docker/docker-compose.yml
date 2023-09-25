@@ -1,0 +1,31 @@
+services:
+  echo-server:
+    image: landrzejewski/echo-server:v2
+    restart: always
+    deploy:
+      replicas: 3
+    networks:
+      internal:
+  postgres-server:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=training
+    ports:
+      - "5432:5432"
+    volumes:
+      - storage:/var/lib/postgresql/data
+    networks:
+      internal:
+        ipv4_address: 192.168.20.100
+volumes:
+  storage:
+    external: true
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.20.0/24

@@ -1,0 +1,21 @@
+services:
+  postgres-server:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=training
+    volumes:
+      - users-storage:/var/lib/postgresql/data
+      - ./scripts:/docker-entrypoint-initdb.d:ro
+    networks:
+      users-network:
+volumes:
+  users-storage:
+networks:
+  users-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24

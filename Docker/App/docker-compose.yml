@@ -1,5 +1,5 @@
 services:
-  postgres-server:
+  postgres-service:
     image: postgres:16-alpine
     restart: always
     environment:
@@ -9,6 +9,18 @@ services:
     volumes:
       - users-storage:/var/lib/postgresql/data
       - ./scripts:/docker-entrypoint-initdb.d:ro
+    networks:
+      users-network:
+  users-sevice:
+    image: users
+    restart: always
+    deploy:
+      replicas: 3
+    networks:
+      users-network:
+  client:
+    image: ubuntu:23.10
+    tty: true
     networks:
       users-network:
 volumes:

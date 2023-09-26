@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: status-monitor-daemon-set
+  namespace: training
+spec:
+  selector:
+    matchLabels:
+      app-name: status-monitor
+  template:
+    metadata:
+      labels:
+        app-name: status-monitor
+    spec:
+      containers:
+        - name: status-monitor
+          image: landrzejewski/status-monitor
+          resources:
+            requests:
+              memory: 8M

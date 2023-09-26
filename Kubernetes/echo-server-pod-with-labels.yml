@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: echo-server-pod
+  labels:
+    version: v1
+    env: test
+spec:
+  containers:
+    - name: echo-server
+      image: landrzejewski/echo-server:v2
+      ports:
+        - containerPort: 8080
+          name: http
+      resources:
+        requests:
+          memory: 64M
+        limits:
+          memory: 128M

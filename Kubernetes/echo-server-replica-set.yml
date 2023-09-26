@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: echo-server-replica-set
+  namespace: training
+spec:
+  replicas: 5
+  selector:
+    #matchLabels:
+    #  app-name: echo-server
+    matchExpressions:
+      - key: app-name
+        values:
+          - echo-server
+          - echo-service
+        operator: In
+  template:
+    metadata:
+      namespace: training
+      labels:
+        app-name: echo-server
+        version: v1
+        env: test
+    spec:
+      containers:
+        - name: echo-server
+          image: landrzejewski/echo-server:v2
+          ports:
+            - containerPort: 8080
+              name: http
+          resources:
+            requests:
+              memory: 64M
+            limits:
+              memory: 128M
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            failureThreshold: 3
+            timeoutSeconds: 2

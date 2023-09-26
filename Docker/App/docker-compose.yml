@@ -28,11 +28,11 @@ services:
     volumes:
       - ./proxy:/etc/nginx/conf.d:ro
       - ./html:/usr/share/nginx/html
-  client:
-    image: ubuntu:23.10
-    tty: true
-    networks:
-      users-network:
+#  client:
+#    image: ubuntu:23.10
+#    tty: true
+#    networks:
+#      users-network:
 volumes:
   users-storage:
 networks:

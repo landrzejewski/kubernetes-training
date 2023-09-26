@@ -33,6 +33,15 @@ services:
 #    tty: true
 #    networks:
 #      users-network:
+  portainer:
+    image: portainer/portainer-ce:latest
+    ports:
+      - "9000:9000"
+    networks:
+      users-network:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data/portainer:/data
 volumes:
   users-storage:
 networks:

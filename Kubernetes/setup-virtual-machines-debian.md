@@ -43,7 +43,7 @@ nano /etc/apt/sources.list
 apt update 
 ```
 ```
-apt install sudo net-tools curl git
+apt install sudo net-tools curl git gnupg
 ```
 - Dodaj użytkownika k8s do grupy sudo
 ```
@@ -72,13 +72,22 @@ swapoff -a
 ```
 sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 ```
-- Dodaj do źródeł pakietów gałąź eksperymentalną i zainstaluj aktualny Containerd 
+- Zainstaluj CRI-O
 ```
-echo "deb http://ftp.ca.debian.org/debian sid main" >> /etc/apt/sources.list
-```
-```
+apt install 
+OS=Debian_12
+CRIO_VERSION=1.28
+echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/ /"|sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$CRIO_VERSION/$OS/ /"|sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable:cri-o:$CRIO_VERSION.list
+curl -L https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:$CRIO_VERSION/$OS/Release.key | sudo apt-key add -
+curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/Release.key | sudo apt-key add -
 sudo apt update
+sudo apt install cri-o cri-o-runc
+sudo systemctl daemon-reload
+sudo systemctl restart crio
+sudo systemctl enable crio
 ```
+- Ustaw wymaganą konfigurację sieci i modułów
 ```
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
 overlay
@@ -95,20 +104,6 @@ net.ipv4.ip_forward                 = 1
 EOF
 
 sudo sysctl --system
-```
-```
-sudo apt install containerd=1.6.16~ds1-1
-```
-```
-containerd config default | sudo tee /etc/containerd/config.toml >/dev/null 2>&1
-```
-- Zmień plik `/etc/containerd/config.toml` w sekcji `[plugins.”io.containerd.grpc.v1.cri”.containerd.runtimes.runc.options]` 
-ustawiając `SystemdCgroup = true`
-```
-sudo systemctl restart containerd
-```
-```
-sudo systemctl enable containerd
 ```
 - Zainstaluj narzędzia Kubernetes
 ```

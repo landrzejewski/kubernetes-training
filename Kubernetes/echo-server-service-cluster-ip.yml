@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-server-service
+  namespace: training
+spec:
+  type: ClusterIP #default
+  selector:
+    app-name: echo-server
+  #clusterIP: 17.16.109.100
+  ports:
+    - port: 80
+      targetPort: 8080

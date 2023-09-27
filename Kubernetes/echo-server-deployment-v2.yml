@@ -4,9 +4,13 @@ metadata:
   name: echo-server-deployment
   namespace: training
   annotations:
-    kubernetes.io/change-cause: "Initial release"
+    kubernetes.io/change-cause: "V2 release"
 spec:
   replicas: 5
+  strategy:
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
   selector:
     #matchLabels:
     #  app-name: echo-server
@@ -21,12 +25,12 @@ spec:
       namespace: training
       labels:
         app-name: echo-server
-        version: v1
+        version: v2
         env: test
     spec:
       containers:
         - name: echo-server
-          image: landrzejewski/echo-server:v1
+          image: landrzejewski/echo-server:v2
           ports:
             - containerPort: 8080
               name: http
@@ -43,3 +47,10 @@ spec:
             periodSeconds: 2
             failureThreshold: 3
             timeoutSeconds: 2
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            successThreshold: 3

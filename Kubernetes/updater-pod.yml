@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: training
+  name: updater-pod
+spec:
+  containers:
+    - name: updater
+      image: landrzejewski/updater:v2
+      #args:
+      #  - '20'
+
+      #env:
+      #  - name: INTERVAL
+      #    #value: '20'
+      #    valueFrom:
+      #      configMapKeyRef:
+      #        name: updater-config-map
+      #        key: INTERVAL
+
+      envFrom:
+        - configMapRef:
+            name: updater-config-map
+      volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: storage
+          mountPath: /storage
+
+  volumes:
+    - name: config
+      configMap:
+        name: updater-config-map
+    - name: storage
+      hostPath:
+        path: /storage

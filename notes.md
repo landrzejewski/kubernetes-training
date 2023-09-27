@@ -16,3 +16,6 @@ https://docs.docker.com/engine/install/debian
 https://hub.docker.com
 
 https://drive.google.com/drive/folders/1l81mOU3cW7IMR3uvnSr4srxJr3mC_Ert?usp=sharing
+
+https://computingforgeeks.com/install-kubernetes-cluster-on-debian-12-bookworm
+https://killer.sh

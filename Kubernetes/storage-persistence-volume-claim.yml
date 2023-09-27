@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: storage-claim
+  namespace: training
+spec:
+  resources:
+    requests:
+      storage: 5G
+  accessModes:
+    - ReadWriteOnce

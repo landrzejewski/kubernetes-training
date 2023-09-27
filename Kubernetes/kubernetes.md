@@ -225,22 +225,39 @@ wsl --install -d ubuntu
 sudo apt-get update
 ```
 ```
-sudo apt-get install python3
-```
-```
-sudo apt-get install python3-pip
+sudo apt-get install python3 python3-pip
 ```
 ```
 git clone https://github.com/kubernetes-sigs/kubespray
 ```
 Ustawić ansible.compatibility_mode = "2.0" w Vagrantfile
 ```
+# Install virt-manager
+sudo apt install -y virt-manager
+ 
+# Add youself to kvm and libvirt group
+sudo usermod --append --groups kvm,libvirt "${USER}"
+ 
+# Fix-up permission to avoid "Could not access KVM kernel module: Permission denied" error
+sudo chown root:kvm /dev/kvm
+sudo chmod 660 /dev/kvm
+ 
+# Start required services
+sudo libvirtd &
+sudo virtlogd &
+ 
+# Launch virt-manager
+virt-manager &
+
+sudo chmod 777 -R /var/run/libvirt
+
+
 cd kubespray
-sudo pip install -r requirements-2.12.txt
+sudo pip install -r requirements.txt
 export PATH="$PATH:/mnt/c/Program Files/Oracle/VirtualBox"   // windows
 export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"                 // windows
+export VAGRANT_HOME=/home/lukas/vagrant
 sudo apt-get install vagrant
-export VAGRANT_HOME=/home/NAZWA_UŻYTKOWNIKA/vagrant
 vagrant plugin install virtualbox_WSL2                       // windows
 vagrant up
 ```

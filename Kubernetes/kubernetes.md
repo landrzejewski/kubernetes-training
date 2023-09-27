@@ -120,7 +120,7 @@ kubectl run -it --rm test --image=busybox /bin/sh
 ```
 Instalacja metallb [https://metallb.universe.tf/installation](https://metallb.universe.tf/installation)
 ```
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.2/config/manifests/metallb-native.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.11/config/manifests/metallb-native.yaml
 ```
 ```
 apiVersion: metallb.io/v1beta1

@@ -4,7 +4,7 @@ metadata:
   name: echo-server-service
   namespace: training
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app-name: echo-server
   #clusterIP: 17.16.109.100
